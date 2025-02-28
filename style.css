@@ -99,11 +99,18 @@ h2:hover {
   cursor: pointer;
 }
 
+#total-pages {
+  font-size: 16px; /* 與 pageNumInput 保持一致的字體大小 */
+  color: #333; /* 與 body 文字顏色一致 */
+  margin-left: 5px; /* 與 pageNumInput 保持適當間距 */
+  font-family: sans-serif; /* 與 body 保持一致 */
+}
+
 #page-num {
-  width: 40px;
+  width: 50px; /* 固定寬度，確保輸入框大小一致 */
   text-align: center;
   margin: 0 auto;
-  display: block;
+  font-size: 16px; /* 確保與 total-pages 一致 */
 }
 
 .thumbnail {
@@ -119,7 +126,8 @@ h2:hover {
 
 #drawing-controls {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
   margin-bottom: 10px;
 }
 
@@ -136,7 +144,8 @@ h2:hover {
 
 #fullscreen-controls {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
   margin-bottom: 10px;
 }
 
@@ -208,4 +217,94 @@ h2:hover {
   /* display: none;  Hide the thumbnails in fullscreen */
   display: block; /* Make sure it's visible */
   width: 25%; /* Or whatever width you want */
+}
+
+#left-panel-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+}
+
+#pdf-upload-container {
+    margin-bottom: 10px;
+}
+
+#left-panel button {
+    width: 100%;
+    padding: 8px;
+    margin: 2px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+#left-panel button:hover {
+    background-color: #f0f0f0;
+}
+
+#left-panel button.active {
+    background-color: #007bff;
+    color: white;
+}
+
+#search-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 10px 0;
+  width: 100%;
+}
+
+#search-input {
+  width: 100%;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+#search-button {
+  width: 100%;
+  padding: 5px;
+  background-color: #007bff;
+  color: rgb(10, 10, 10);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#search-button:hover {
+  background-color: #0056b3;
+}
+
+#search-nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 5px;
+  gap: 5px;
+}
+
+#search-nav-container button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#search-nav-container button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+#search-count {
+  font-size: 14px;
+  color: #666;
+}
+
+#search-nav-container button:hover:not(:disabled) {
+  background-color: #0056b3;
 }
