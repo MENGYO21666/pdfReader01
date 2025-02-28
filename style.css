@@ -81,10 +81,51 @@ h2:hover {
 }
 
 #pdf-canvas {
+  position: relative;
   border: 1px solid #ccc;
   margin-bottom: 10px;
   width: 100%;
   height: auto;
+}
+
+#pdf-placeholder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  color: #666;
+  font-family: sans-serif;
+  text-align: center;
+  padding: 40px;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#pdf-placeholder::after {
+  content: 'Drag PDF here';
+  display: block;
+  font-size: 16px;
+  margin-top: 10px;
+  color: #999;
+}
+
+#pdf-placeholder.drag-hover {
+  border-color: #007bff;
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+/* Make the file input cover the placeholder for click uploads */
+#pdf-upload {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  cursor: pointer;
 }
 
 #navigation {
@@ -307,4 +348,38 @@ h2:hover {
 
 #search-nav-container button:hover:not(:disabled) {
   background-color: #0056b3;
+}
+
+#left-panel-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    border: 2px dashed #ccc;
+    border-radius: 4px;
+    margin: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#left-panel-upload:hover {
+    border-color: #007bff;
+    background-color: rgba(0, 123, 255, 0.1);
+}
+
+#left-panel-upload-text {
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+#left-panel-upload input[type="file"] {
+    display: none;
+}
+
+.upload-icon {
+    font-size: 24px;
+    color: #666;
+    margin-bottom: 5px;
 }

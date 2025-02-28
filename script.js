@@ -43,6 +43,72 @@ let currentScale = scale;
 let searchResults = [];
 let currentSearchIndex = -1;
 
+// Add this after creating pdfCanvas
+const placeholderText = document.createElement('div');
+placeholderText.id = 'pdf-placeholder';
+placeholderText.textContent = 'Please upload your PDF file';
+midPanel.insertBefore(placeholderText, pdfCanvas);
+
+// Add drag and drop functionality
+const dropZone = document.getElementById('pdf-placeholder');
+
+// Add these event listeners after creating the pdf-placeholder
+['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+    dropZone.addEventListener(eventName, preventDefaults, false);
+    document.body.addEventListener(eventName, preventDefaults, false);
+});
+
+function preventDefaults(e) {
+    e.preventDefault();
+    e.stopPropagation();
+}
+
+['dragenter', 'dragover'].forEach(eventName => {
+    dropZone.addEventListener(eventName, highlight, false);
+});
+
+['dragleave', 'drop'].forEach(eventName => {
+    dropZone.addEventListener(eventName, unhighlight, false);
+});
+
+function highlight(e) {
+    dropZone.classList.add('drag-hover');
+}
+
+function unhighlight(e) {
+    dropZone.classList.remove('drag-hover');
+}
+
+dropZone.addEventListener('drop', handleDrop, false);
+
+function handleDrop(e) {
+    const dt = e.dataTransfer;
+    const file = dt.files[0];
+    
+    if (file && file.type === 'application/pdf') {
+        document.querySelector('h1').style.display = 'none';
+        dropZone.style.display = 'none';
+        
+        const fileReader = new FileReader();
+        fileReader.onload = function() {
+            const typedArray = new Uint8Array(this.result);
+            pdfjsLib.getDocument(typedArray).promise.then(function(pdfDoc_) {
+                pdfDoc = pdfDoc_;
+                pageNum = 1;
+                pageNumInput.setAttribute('max', pdfDoc.numPages);
+                renderPage(pageNum);
+                renderThumbnails(pdfDoc_);
+                
+                const totalPagesSpan = document.getElementById('total-pages');
+                totalPagesSpan.textContent = ` / ${pdfDoc.numPages}`;
+            });
+        };
+        fileReader.readAsArrayBuffer(file);
+    } else {
+        alert('Please drop a PDF file');
+    }
+}
+
 function renderPage(num) {
   pageRendering = true;
   pdfDoc.getPage(num).then(function(page) {
@@ -188,7 +254,8 @@ pdfCanvas.addEventListener('wheel', (event) => {
 });
 
 pdfUpload.addEventListener('change', (event) => {
-    document.querySelector('h1').style.display = 'none'; // 保持現有的隱藏 <h1> 邏輯
+    document.querySelector('h1').style.display = 'none';
+    document.getElementById('pdf-placeholder').style.display = 'none'; // Hide placeholder
     const file = event.target.files[0];
     const fileReader = new FileReader();
 
@@ -334,82 +401,79 @@ searchContainer.appendChild(searchButton);
 searchContainer.appendChild(searchNavContainer);
 leftPanelControls.appendChild(searchContainer);
 
-// 搜尋功能實現
-async function searchPDF(searchTerm) {
-    if (!pdfDoc) return;
-    
-    searchResults = [];
-    currentSearchIndex = -1;
-    
-    for (let pageIndex = 1; pageIndex <= pdfDoc.numPages; pageIndex++) {
-        const page = await pdfDoc.getPage(pageIndex);
-        const textContent = await page.getTextContent();
-        
-        textContent.items.forEach(item => {
-            if (item.str.toLowerCase().includes(searchTerm.toLowerCase())) {
-                searchResults.push({
-                    pageNum: pageIndex,
-                    text: item.str
-                });
-            }
-        });
-    }
-    
-    // Update search navigation UI
-    updateSearchNavigation();
-    
-    if (searchResults.length > 0) {
-        currentSearchIndex = 0;
-        navigateToSearchResult(currentSearchIndex);
+// Add this after leftPanelControls creation
+const leftPanelUpload = document.createElement('div');
+leftPanelUpload.id = 'left-panel-upload';
+
+const uploadIcon = document.createElement('div');
+uploadIcon.className = 'upload-icon';
+uploadIcon.innerHTML = '';
+
+const uploadText = document.createElement('div');
+uploadText.id = 'left-panel-upload-text';
+uploadText.textContent = 'Upload PDF';
+
+const fileInput = document.createElement('input');
+fileInput.type = 'file';
+fileInput.accept = '.pdf';
+fileInput.id = 'left-panel-file-input';
+
+leftPanelUpload.appendChild(uploadIcon);
+leftPanelUpload.appendChild(uploadText);
+leftPanelUpload.appendChild(fileInput);
+
+// Insert at the top of left panel controls
+leftPanelControls.insertBefore(leftPanelUpload, leftPanelControls.firstChild);
+
+// Add event listeners
+leftPanelUpload.addEventListener('click', () => {
+    fileInput.click();
+});
+
+fileInput.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if (file && file.type === 'application/pdf') {
+        const fileReader = new FileReader();
+        fileReader.onload = function() {
+            const typedArray = new Uint8Array(this.result);
+            pdfjsLib.getDocument(typedArray).promise.then(function(pdfDoc_) {
+                pdfDoc = pdfDoc_;
+                pageNum = 1;
+                pageNumInput.setAttribute('max', pdfDoc.numPages);
+                renderPage(pageNum);
+                renderThumbnails(pdfDoc_);
+                
+                const totalPagesSpan = document.getElementById('total-pages');
+                if (totalPagesSpan) {
+                    totalPagesSpan.textContent = ` / ${pdfDoc.numPages}`;
+                }
+                
+                // Hide placeholder if it exists
+                const placeholder = document.getElementById('pdf-placeholder');
+                if (placeholder) {
+                    placeholder.style.display = 'none';
+                }
+            });
+        };
+        fileReader.readAsArrayBuffer(file);
     } else {
-        alert('找不到符合的文字');
-        searchCountDisplay.textContent = '0/0';
-    }
-}
-
-function updateSearchNavigation() {
-    prevSearchButton.disabled = currentSearchIndex <= 0;
-    nextSearchButton.disabled = currentSearchIndex >= searchResults.length - 1;
-    searchCountDisplay.textContent = searchResults.length > 0 
-        ? `${currentSearchIndex + 1}/${searchResults.length}`
-        : '0/0';
-}
-
-function navigateToSearchResult(index) {
-    if (index >= 0 && index < searchResults.length) {
-        const result = searchResults[index];
-        pageNum = result.pageNum;
-        queueRenderPage(pageNum);
-        currentSearchIndex = index;
-        updateSearchNavigation();
-    }
-}
-
-// Add event listeners for search navigation
-prevSearchButton.addEventListener('click', () => {
-    navigateToSearchResult(currentSearchIndex - 1);
-});
-
-nextSearchButton.addEventListener('click', () => {
-    navigateToSearchResult(currentSearchIndex + 1);
-});
-
-// 添加搜尋事件監聽器
-searchButton.addEventListener('click', () => {
-    const searchTerm = searchInput.value.trim();
-    if (searchTerm) {
-        searchPDF(searchTerm);
-    }
-});
-
-searchInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        const searchTerm = searchInput.value.trim();
-        if (searchTerm) {
-            searchPDF(searchTerm);
-        }
+        alert('Please select a PDF file');
     }
 });
 
 // Add all controls to left panel
 leftPanel.appendChild(leftPanelControls);
+
+// Add keyboard navigation event listener
+document.addEventListener('keydown', (event) => {
+    // Check if we're not in an input field
+    if (event.target.tagName !== 'INPUT') {
+        if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+            event.preventDefault();
+            showPrevPage();
+        } else if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+            event.preventDefault();
+            showNextPage();
+        }
+    }
+});
