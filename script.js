@@ -22,7 +22,7 @@ const drawingControls = document.createElement('div');
 drawingControls.id = 'drawing-controls';
 drawingControls.appendChild(enableDrawingButton);
 
-const leftPanel = document.getElementById('left-panel');
+const midPanel = document.getElementById('mid-panel');
 
 const fullscreenButton = document.createElement('button');
 fullscreenButton.textContent = 'Fullscreen';
@@ -34,8 +34,8 @@ fullscreenControls.id = 'fullscreen-controls';
 fullscreenControls.appendChild(fullscreenButton);
 fullscreenControls.appendChild(exitFullscreenButton);
 
-leftPanel.insertBefore(fullscreenControls, leftPanel.firstChild);
-leftPanel.insertBefore(drawingControls, pdfCanvas);
+midPanel.insertBefore(fullscreenControls, midPanel.firstChild);
+midPanel.insertBefore(drawingControls, pdfCanvas);
 
 let currentScale = scale;
 
@@ -184,6 +184,7 @@ pdfCanvas.addEventListener('wheel', (event) => {
 });
 
 pdfUpload.addEventListener('change', (event) => {
+  document.querySelector('h1').style.display = 'none';
   const file = event.target.files[0];
   const fileReader = new FileReader();
 
