@@ -22,6 +22,12 @@ const drawingControls = document.createElement('div');
 drawingControls.id = 'drawing-controls';
 drawingControls.appendChild(enableDrawingButton);
 
+// Add after creating enableDrawingButton
+const cleanDrawingButton = document.createElement('button');
+cleanDrawingButton.textContent = 'Clean Drawing';
+cleanDrawingButton.id = 'clean-drawing';
+drawingControls.appendChild(cleanDrawingButton);
+
 const midPanel = document.getElementById('mid-panel');
 
 const fullscreenButton = document.createElement('button');
@@ -477,3 +483,24 @@ document.addEventListener('keydown', (event) => {
         }
     }
 });
+
+// Add the clean drawing functionality
+cleanDrawingButton.addEventListener('click', () => {
+    clearDrawing();
+});
+
+// Add this function to clear the drawings
+function clearDrawing() {
+    // Store the current canvas content
+    const currentCanvas = pdfCanvas.toDataURL();
+    const img = new Image();
+    
+    img.onload = function() {
+        // Clear the entire canvas
+        ctx.clearRect(0, 0, pdfCanvas.width, pdfCanvas.height);
+        // Re-render the current page
+        renderPage(pageNum);
+    };
+    
+    img.src = currentCanvas;
+}

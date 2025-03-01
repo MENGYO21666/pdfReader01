@@ -185,17 +185,21 @@ h2:hover {
   color: white;
 }
 
+
+
 #fullscreen-controls {
   display: flex;
   flex-direction: column;
   gap: 5px;
   margin-bottom: 10px;
+  display: none;
 }
 
 #fullscreen-controls button {
   padding: 5px 10px;
   margin: 0 5px;
   cursor: pointer;
+  display: none;
 }
 
 #fullscreen-controls button.active {
@@ -388,4 +392,18 @@ h2:hover {
     font-size: 24px;
     color: #666;
     margin-bottom: 5px;
+}
+
+#clean-drawing {
+    width: 100%;
+    padding: 8px;
+    margin: 2px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+#clean-drawing:hover {
+    background-color: #f0f0f0;
 }
