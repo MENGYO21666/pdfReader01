@@ -117,15 +117,17 @@ h2:hover {
   background-color: rgba(0, 123, 255, 0.1);
 }
 
-/* Make the file input cover the placeholder for click uploads */
+/* Remove or modify the old #pdf-upload style */
 #pdf-upload {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  opacity: 0;
-  cursor: pointer;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* Limit to parent container */
+    position: relative;
 }
 
 #navigation {
@@ -351,6 +353,7 @@ h2:hover {
 }
 
 #left-panel-upload {
+    position: relative; /* Add this to contain absolute positioned children */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -360,8 +363,11 @@ h2:hover {
     margin: 10px;
     cursor: pointer;
     transition: all 0.3s ease;
+    /* Add a specific height if needed */
+    height: 30px;
 }
 
+/* Rest of the styles remain the same */
 #left-panel-upload:hover {
     border-color: #007bff;
     background-color: rgba(0, 123, 255, 0.1);
