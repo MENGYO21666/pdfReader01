@@ -67,6 +67,9 @@ h2:hover {
   padding: 10px;
   overflow-y: auto;
   height: 100vh; /* Make right panel take full height */  
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center canvas horizontally */
 }
 
 #right-panel {
@@ -84,8 +87,10 @@ h2:hover {
   position: relative;
   border: 1px solid #ccc;
   margin-bottom: 10px;
-  width: 100%;
+  width: auto; /* Changed from 100% to auto */
   height: auto;
+  max-width: 100%; /* Add max-width to prevent overflow */
+  transition: all 0.3s ease; /* Smooth transition for zoom */
 }
 
 #pdf-placeholder {
@@ -463,4 +468,30 @@ h2:hover {
 
 #large-font {
     font-size: 24px;
+}
+
+#zoom-controls {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+    margin: 10px 0;
+}
+
+#zoom-controls button {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#zoom-controls button:hover {
+    background-color: #f0f0f0;
+}
+
+#zoom-reset {
+    min-width: 60px;
+    text-align: center;
 }

@@ -67,6 +67,26 @@ fontSizeControls.appendChild(largeFontButton);
 // Add font controls after drawing controls
 drawingControls.appendChild(fontSizeControls);
 
+// Add after creating drawingControls
+const zoomControls = document.createElement('div');
+zoomControls.id = 'zoom-controls';
+
+const zoomOutButton = document.createElement('button');
+zoomOutButton.textContent = '-';
+zoomOutButton.id = 'zoom-out';
+
+const zoomInButton = document.createElement('button');
+zoomInButton.textContent = '+';
+zoomInButton.id = 'zoom-in';
+
+const zoomResetButton = document.createElement('button');
+zoomResetButton.textContent = '100%';
+zoomResetButton.id = 'zoom-reset';
+
+zoomControls.appendChild(zoomOutButton);
+zoomControls.appendChild(zoomResetButton);
+zoomControls.appendChild(zoomInButton);
+
 const midPanel = document.getElementById('mid-panel');
 
 const fullscreenButton = document.createElement('button');
@@ -407,6 +427,9 @@ leftPanelControls.appendChild(fullscreenControls);
 drawingControls.id = 'drawing-controls';
 leftPanelControls.appendChild(drawingControls);
 
+// Add zoom controls to left panel
+leftPanelControls.appendChild(zoomControls);
+
 // 添加搜尋控制項到左側面板
 const searchContainer = document.createElement('div');
 searchContainer.id = 'search-container';
@@ -636,3 +659,28 @@ function applyText() {
         }
     });
 });
+
+// Add zoom control handlers
+zoomInButton.addEventListener('click', () => {
+    currentScale += 0.2;
+    currentScale = Math.min(3.0, currentScale); // Max zoom 300%
+    renderPage(pageNum);
+    updateZoomDisplay();
+});
+
+zoomOutButton.addEventListener('click', () => {
+    currentScale -= 0.2;
+    currentScale = Math.max(0.5, currentScale); // Min zoom 50%
+    renderPage(pageNum);
+    updateZoomDisplay();
+});
+
+zoomResetButton.addEventListener('click', () => {
+    currentScale = 1.0;
+    renderPage(pageNum);
+    updateZoomDisplay();
+});
+
+function updateZoomDisplay() {
+    zoomResetButton.textContent = `${Math.round(currentScale * 100)}%`;
+}
