@@ -16,6 +16,11 @@ let lastX = 0;
 let lastY = 0;
 let isDrawing = false;
 
+// Add these variables at the top with other state variables
+let textMode = false;
+let textInput = null;
+let selectedFontSize = '16px'; // default size
+
 const enableDrawingButton = document.createElement('button');
 enableDrawingButton.textContent = 'Toggle Drawing';
 const drawingControls = document.createElement('div');
@@ -27,6 +32,40 @@ const cleanDrawingButton = document.createElement('button');
 cleanDrawingButton.textContent = 'Clean Drawing';
 cleanDrawingButton.id = 'clean-drawing';
 drawingControls.appendChild(cleanDrawingButton);
+
+// Create text mode button
+const enableTextButton = document.createElement('button');
+enableTextButton.textContent = 'Add Text';
+enableTextButton.id = 'enable-text';
+drawingControls.appendChild(enableTextButton);
+
+// Create font size controls
+const fontSizeControls = document.createElement('div');
+fontSizeControls.id = 'font-size-controls';
+
+const smallFontButton = document.createElement('button');
+smallFontButton.textContent = 'Small';
+smallFontButton.id = 'small-font';
+smallFontButton.dataset.size = '12px';
+
+const mediumFontButton = document.createElement('button');
+mediumFontButton.textContent = 'Medium';
+mediumFontButton.id = 'medium-font';
+mediumFontButton.dataset.size = '16px';
+mediumFontButton.classList.add('active'); // Default active
+
+const largeFontButton = document.createElement('button');
+largeFontButton.textContent = 'Large';
+largeFontButton.id = 'large-font';
+largeFontButton.dataset.size = '24px';
+
+// Add buttons to controls
+fontSizeControls.appendChild(smallFontButton);
+fontSizeControls.appendChild(mediumFontButton);
+fontSizeControls.appendChild(largeFontButton);
+
+// Add font controls after drawing controls
+drawingControls.appendChild(fontSizeControls);
 
 const midPanel = document.getElementById('mid-panel');
 
@@ -207,7 +246,7 @@ function toggleDrawing(enable) {
 }
 
 enableDrawingButton.addEventListener('click', () => {
-    toggleDrawing(!drawingMode);
+    toggleDrawing(!drawingMode);    
 });
 
 pdfCanvas.addEventListener('mousedown', function(e) {
@@ -504,3 +543,96 @@ function clearDrawing() {
     
     img.src = currentCanvas;
 }
+
+// Add text input functionality
+function toggleTextMode(enable) {
+    textMode = enable;
+    if (enable) {
+        enableTextButton.classList.add('active');
+        pdfCanvas.style.cursor = 'text';
+    } else {
+        enableTextButton.classList.remove('active');
+        pdfCanvas.style.cursor = 'default';
+    }
+}
+
+enableTextButton.addEventListener('click', () => {
+    toggleTextMode(!textMode);
+});
+
+pdfCanvas.addEventListener('click', function(e) {
+    if (!textMode) return;
+    
+    // Remove any existing text input
+    if (textInput) {
+        applyText();
+    }
+    
+    // Create text input
+    textInput = document.createElement('textarea');
+    textInput.style.position = 'absolute';
+    textInput.style.left = e.pageX + 'px';
+    textInput.style.top = e.pageY + 'px';
+    textInput.style.background = 'transparent';
+    textInput.style.border = '1px solid #000';
+    textInput.style.padding = '5px';
+    textInput.style.minWidth = '100px';
+    textInput.style.minHeight = '20px';
+    textInput.style.resize = 'both';
+    textInput.style.overflow = 'hidden';
+    textInput.style.zIndex = '1000';
+    textInput.style.fontSize = selectedFontSize;
+    
+    document.body.appendChild(textInput);
+    textInput.focus();
+    
+    // Handle text input events
+    textInput.addEventListener('blur', applyText);
+    textInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            applyText();
+        }
+    });
+});
+
+function applyText() {
+    if (!textInput || !textInput.value.trim()) {
+        textInput?.remove();
+        textInput = null;
+        return;
+    }
+    
+    const rect = textInput.getBoundingClientRect();
+    const canvasRect = pdfCanvas.getBoundingClientRect();
+    
+    // Convert coordinates relative to canvas
+    const x = (rect.left - canvasRect.left) * (pdfCanvas.width / pdfCanvas.offsetWidth);
+    const y = (rect.top - canvasRect.top) * (pdfCanvas.height / pdfCanvas.offsetHeight);
+    
+    // Use selected font size
+    ctx.font = `${selectedFontSize} Arial`;
+    ctx.fillStyle = '#000000';
+    // Adjust y-offset based on font size
+    const fontSize = parseInt(selectedFontSize);
+    ctx.fillText(textInput.value, x, y + fontSize);
+    
+    // Clean up
+    textInput.remove();
+    textInput = null;
+}
+
+// Add font size selection handlers
+[smallFontButton, mediumFontButton, largeFontButton].forEach(button => {
+    button.addEventListener('click', () => {
+        // Remove active class from all buttons
+        [smallFontButton, mediumFontButton, largeFontButton].forEach(btn => 
+            btn.classList.remove('active'));
+        // Add active class to clicked button
+        button.classList.add('active');
+        selectedFontSize = button.dataset.size;
+        if (textInput) {
+            textInput.style.fontSize = selectedFontSize;
+        }
+    });
+});

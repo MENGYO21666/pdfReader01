@@ -50,7 +50,7 @@ h2:hover {
 }
 
 #left-panel {
-  width: 10%; /* Reduced width */
+  width: 12%; /* Reduced width */
    /* Reduced padding */
   overflow-y: auto;
   height: 100vh; /* Make right panel take full height */
@@ -406,4 +406,61 @@ h2:hover {
 
 #clean-drawing:hover {
     background-color: #f0f0f0;
+}
+
+#enable-text {
+    width: 100%;
+    padding: 8px;
+    margin: 2px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+#enable-text:hover {
+    background-color: #f0f0f0;
+}
+
+#enable-text.active {
+    background-color: #007bff;
+    color: white;
+}
+
+#font-size-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    gap: 5px;
+}
+
+#font-size-controls button {
+    flex: 1;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+#font-size-controls button:hover {
+    background-color: #f0f0f0;
+}
+
+#font-size-controls button.active {
+    background-color: #007bff;
+    color: white;
+}
+
+#small-font {
+    font-size: 12px;
+}
+
+#medium-font {
+    font-size: 16px;
+}
+
+#large-font {
+    font-size: 24px;
 }
