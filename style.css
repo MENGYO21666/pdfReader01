@@ -9,7 +9,7 @@ body {
 
 h1 {
   font-size: 28px; /* 較大的字體，吸引注意 */
-  color: #1a73e8; /* 藍色，類似 Google 連結顏色 */
+  color: #1a1a1a; /* Darker text for headers */
   margin: 0; /* 移除預設邊距 */
   font-weight: bold; /* 粗體，強調重要性 */
   line-height: 1.2; /*行高，確保可讀性*/
@@ -26,7 +26,7 @@ h1 {
 
 h2 {
   font-size: 22px; /* 比 <h1> (28px) 小，但比段落文字大 */
-  color: #1a73e8; /* 與 <h1> 保持一致的藍色，突出重要性 */
+  color: #1a1a1a; /* Darker text for headers */
   margin: 20px 0 10px 0; /* 上邊距 20px，下邊距 10px，與內容保持適當間距 */
   font-weight: 600; /* 中等粗體，確保清晰但不過於突出 */
   line-height: 1.4; /* 增加行高，提升可讀性 */
@@ -99,11 +99,11 @@ h2:hover {
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 24px;
-  color: #666;
+  color: #4a4a4a; /* Darker text instead of #666 */
   font-family: sans-serif;
   text-align: center;
   padding: 40px;
-  border: 2px dashed #ccc;
+  border: 2px dashed #666666; /* Darker border */
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -149,7 +149,7 @@ h2:hover {
 
 #total-pages {
   font-size: 16px; /* 與 pageNumInput 保持一致的字體大小 */
-  color: #333; /* 與 body 文字顏色一致 */
+  color: #333333; /* Darker text instead of #666 */
   margin-left: 5px; /* 與 pageNumInput 保持適當間距 */
   font-family: sans-serif; /* 與 body 保持一致 */
 }
@@ -159,6 +159,7 @@ h2:hover {
   text-align: center;
   margin: 0 auto;
   font-size: 16px; /* 確保與 total-pages 一致 */
+  color: #333333; /* Darker text instead of #666 */
 }
 
 .thumbnail {
@@ -288,17 +289,28 @@ h2:hover {
     margin: 2px 0;
     border: 1px solid #ccc;
     border-radius: 4px;
-    background-color: #fff;
+    background-color: #ffffff;
+    color: #333333; /* 深色文字 */
     cursor: pointer;
+    font-weight: 500; /* 適中的字體粗細 */
 }
 
 #left-panel button:hover {
     background-color: #f0f0f0;
+    color: #000000;
 }
 
 #left-panel button.active {
     background-color: #007bff;
-    color: white;
+    color: #ffffff; /* 確保啟用狀態的文字是白色 */
+    border-color: #0056b3;
+}
+
+#left-panel button:disabled {
+    background-color: #e9ecef;
+    color: #6c757d;
+    cursor: not-allowed;
+    border-color: #dee2e6;
 }
 
 #search-container {
@@ -310,7 +322,7 @@ h2:hover {
 }
 
 #search-input {
-  width: 100%;
+  width: 93%;
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -319,15 +331,15 @@ h2:hover {
 #search-button {
   width: 100%;
   padding: 5px;
-  background-color: #007bff;
+  background-color: #0056b3; /* Darker blue */
   color: rgb(10, 10, 10);
-  border: none;
+  border: 1px solid #004085;
   border-radius: 4px;
   cursor: pointer;
 }
 
 #search-button:hover {
-  background-color: #0056b3;
+  background-color: #004085;
 }
 
 #search-nav-container {
@@ -340,25 +352,25 @@ h2:hover {
 
 #search-nav-container button {
   padding: 5px 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
+  background-color: #ffffff;
+  color: #333333;
+  border: 1px solid #cccccc;
   border-radius: 4px;
   cursor: pointer;
 }
 
 #search-nav-container button:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
+  background-color: #6c757d; /* Accessible gray */
+  color: #ffffff;
 }
 
 #search-count {
   font-size: 14px;
-  color: #666;
+  color: #333333; /* Darker text instead of #666 */
 }
 
 #search-nav-container button:hover:not(:disabled) {
-  background-color: #0056b3;
+  background-color: #004085;
 }
 
 #left-panel-upload {
@@ -384,7 +396,7 @@ h2:hover {
 
 #left-panel-upload-text {
     font-size: 14px;
-    color: #666;
+    color: #333333; /* Darker text instead of #666 */
     text-align: center;
     margin-bottom: 5px;
 }
@@ -395,7 +407,7 @@ h2:hover {
 
 .upload-icon {
     font-size: 24px;
-    color: #666;
+    color: #333333; /* Darker text instead of #666 */
     margin-bottom: 5px;
 }
 
@@ -482,7 +494,9 @@ h2:hover {
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    background-color: #fff;
+    background-color: #ffffff;
+    color: #333333;
+    border: 1px solid #cccccc;
     cursor: pointer;
     font-size: 14px;
 }
@@ -494,4 +508,33 @@ h2:hover {
 #zoom-reset {
     min-width: 60px;
     text-align: center;
+}
+
+/* Button styles with better contrast */
+button {
+    background-color: #0056b3; /* Darker blue */
+    color: #ffffff;
+    border: 1px solid #004085;
+}
+
+button:hover {
+    background-color: #004085;
+}
+
+button:disabled {
+    background-color: #6c757d; /* Accessible gray */
+    color: #ffffff;
+}
+
+/* Active state with better contrast */
+button.active {
+    background-color: #003366; /* Darker blue for active state */
+    color: #ffffff;
+}
+
+#drawing-controls button,
+#search-nav-container button {
+    background-color: #ffffff;
+    color: #333333;
+    border: 1px solid #cccccc;
 }
