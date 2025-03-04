@@ -48,7 +48,6 @@
       <!-- Thumbnails will be added here -->
     </div>
   </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -80,6 +79,16 @@
             "Thumbnail navigation"
         ]
     }
+  </script>
+  <!-- 在 </body> 前添加 -->
+  <script defer src="script.js"></script>
+  <script>
+    // 延遲載入 PDF.js
+    window.addEventListener('load', function() {
+        const script = document.createElement('script');
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js';
+        document.body.appendChild(script);
+    });
   </script>
 </body>
 </html>
