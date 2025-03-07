@@ -105,8 +105,28 @@ h2:hover {
   padding: 40px;
   border: 2px dashed #666666; /* Darker border */
   border-radius: 8px;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
   transition: all 0.3s ease;
+  width: 60%;
+  height: 60%;
+  max-width: 800px; /* Limit width for smaller screens */
+  max-height: 800px; /* Limit height for smaller screens */ 
+}
+
+.placeholder-content {
+  position: relative;
+  width: 100%;
+  text-align: center;
+}
+
+#pdf-placeholder::after {
+  content: 'Drag PDF here';
+  display: block;
+  font-size: 24px;
+  margin-top: 20px;
+  color: #666;
 }
 
 #pdf-placeholder::after {
@@ -537,4 +557,46 @@ button.active {
     background-color: #ffffff;
     color: #333333;
     border: 1px solid #cccccc;
+}
+
+.tool-description {
+    color: #333;
+    font-size: 1.2rem;
+    margin: 1rem 0;
+    line-height: 1.5;
+}
+
+.feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.feature-list li {
+    padding: 0.5rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.tool-instructions {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.tool-instructions ol {
+    margin: 0.5rem 0;
+    padding-left: 1.5rem;
+}
+
+.tool-instructions li {
+    margin: 0.5rem 0;
+    color: #555;
 }

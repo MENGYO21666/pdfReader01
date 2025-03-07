@@ -201,6 +201,8 @@ function renderPage(num) {
   });
 
   pageNumInput.value = num;
+  togglePdfControls(true);  // Hide controls when page loads
+  
 }
 
 function queueRenderPage(num) {
@@ -684,3 +686,22 @@ zoomResetButton.addEventListener('click', () => {
 function updateZoomDisplay() {
     zoomResetButton.textContent = `${Math.round(currentScale * 100)}%`;
 }
+
+function togglePdfControls(show) {
+    const elements = [
+        document.getElementById('pdf-canvas'),
+        document.getElementById('navigation'),
+        document.getElementById('page-num')
+    ];
+
+    elements.forEach(element => {
+        if (element) {
+            element.style.display = show ? 'block' : 'none';
+        }
+    });
+}
+
+// Add at the beginning of your script, after variable declarations
+document.addEventListener('DOMContentLoaded', () => {
+    togglePdfControls(false);  // Hide controls when page loads
+});
